@@ -24,3 +24,10 @@ CREATE TABLE products
         )
     VALUES
         ("60M-rope", "climb", 200, 10);
+
+    -- use to update stock # when transactions are made
+    UPDATE products
+SET 
+    product_name = 'carabiners'
+WHERE
+    item_id = 3;
