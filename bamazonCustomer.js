@@ -29,13 +29,11 @@ var connection = mysql.createConnection({
     database: "bamazondb"
 });
 
-
 connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
     // upon running file, full list of items instock to be displayed   
     viewProducts();
-
 });
 
 function viewProducts() {
@@ -49,18 +47,14 @@ function viewProducts() {
                 "\nPrice : $" + res[i].price);
         }
         console.log("\n")
+        // initiate transaction here:
         makePurchase();
-
     });
-    // initiate transaction here:
-
 };
-
 
 // following the display of all the items, terminal prompt user with 2 messages, using NPM inquirer 
 // ask user to input product ID they would like to purchase
 // ask user quanity of product they would like to purchse
-// store users choices into a constructor?
 
 function makePurchase() {
     inquirer.prompt([
@@ -82,10 +76,26 @@ function makePurchase() {
         } else {
             console.log("Your Selection is Product Id #" + answer.prodID)
             displaySelected(answer.prodID, answer.purchase)
-            transaction(answer.purchase, answer.prodID)
-        }
-        // if are you done with transaction? Y - sum & sql update
-        // N - run makePurchase();
+            //validation: item availability.
+            // stockCheck();
+            inquirer.prompt([
+                {
+                    type: "confirm",
+                    name: "proceed",
+                    message: "Confirm Transaction."
+                }
+            ]).then(function (answer) {
+                if (answer) {
+                    // if are you done with transaction? Y - sum & sql update
+                    // N - run makePurchase();
+                    transaction(answer.purchase, answer.prodID)
+                    connectionEnd();
+                } else {
+                    console.log("Goodbye")
+                    connectionEnd();
+                };
+            });
+        };
     });
 };
 
@@ -95,14 +105,6 @@ function transaction(quantity, productID) {
         [quantity, productID],
         function (err, res) {
             if (err) throw err;
-            console.log(res)
-            // for (var i = 0; i < res.length; i++) {
-            //     console.log("------------"  + "\nProduct Update")
-            //     console.log("\nItem Id: " + res[i].item_id +
-            //         "\nProduct:" + res[i].product_name +
-            //         "\nPrice : $" + res[i].price) +
-            //         "\nStock Quantity: " + res[i].stock;
-            // };
         });
 };
 
@@ -120,6 +122,12 @@ function displaySelected(id, quantity) {
     });
 };
 
+function stockCheck() {
+    // check the products - stock of the item
+    // if the user quantity is > than the current available stock, inform the user that there is not enough stock and display the current available stock
+    // if the stock === 0, inform the user the item is out of stock
+}
+
 function connectionEnd() {
     connection.end();
-}
+};
