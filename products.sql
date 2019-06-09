@@ -31,3 +31,11 @@ SET
     product_name = 'carabiners'
 WHERE
     item_id = 3;
+
+    -- transaction
+    SELECT stock
+    FROM products
+    WHERE product_id =?
+    -- [user selected]
+    -- current stock - user selected quantity
+    update products set stock = stock - 2 where item_id = 1 ;

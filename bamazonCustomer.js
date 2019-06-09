@@ -38,10 +38,6 @@ connection.connect(function (err) {
 
 });
 
-
-
-
-
 function viewProducts() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
@@ -72,29 +68,54 @@ function makePurchase() {
             type: "input",
             name: "prodID",
             message: "Which product would you like to purchase? Please input Product ID #."
+        },
+        {
+            type: "input",
+            name: "purchase",
+            message: "How many products would you like to purchase."
         }
     ]).then(function (answer) {
-        if (isNaN(answer.prodID)) {
+        //validation: input must be a number
+        if (isNaN(answer.prodID) && isNaN(answer.purchase)) {
             console.log("Please try again and select a valid Product ID # ")
             connectionEnd();
         } else {
             console.log("Your Selection is Product Id #" + answer.prodID)
-            displaySelected(answer.prodID)
+            displaySelected(answer.prodID, answer.purchase)
+            transaction(answer.purchase, answer.prodID)
         }
-        //validation: input must be a number
         // if are you done with transaction? Y - sum & sql update
         // N - run makePurchase();
     });
 };
 
-function displaySelected(id) {
+function transaction(quantity, productID) {
+    // update MySQL with deduction  database stock column with quantity input from stock parameter by user input
+    connection.query("UPDATE products SET stock = stock - ? WHERE item_id = ?",
+        [quantity, productID],
+        function (err, res) {
+            if (err) throw err;
+            console.log(res)
+            // for (var i = 0; i < res.length; i++) {
+            //     console.log("------------"  + "\nProduct Update")
+            //     console.log("\nItem Id: " + res[i].item_id +
+            //         "\nProduct:" + res[i].product_name +
+            //         "\nPrice : $" + res[i].price) +
+            //         "\nStock Quantity: " + res[i].stock;
+            // };
+        });
+};
+
+function displaySelected(id, quantity) {
     connection.query("SELECT * FROM products WHERE item_id = ?", [id], function (err, res) {
         if (err) throw err;
         for (var i = 0; i < res.length; i++) {
-            console.log("------------")
+            console.log("------------" + "\nYour Transaction Summary: ")
             console.log("\nItem Id: " + res[i].item_id +
                 "\nProduct:" + res[i].product_name +
-                "\nPrice : $" + res[i].price);
+                "\nQuantity: " + quantity +
+                "\nTotal Price : $" + res[i].price * quantity)
+            // +"\nStock Quantity: " + res[i].stock;
         };
     });
 };
