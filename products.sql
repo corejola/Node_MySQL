@@ -28,9 +28,9 @@ CREATE TABLE products
     -- use to update stock # when transactions are made
     UPDATE products
 SET 
-    product_name = 'carabiners'
+    product_name = 'ipod'
 WHERE
-    item_id = 3;
+    item_id = 12;
 
     -- transaction
     SELECT stock
@@ -38,6 +38,14 @@ WHERE
     WHERE product_id =?
     -- [user selected]
     -- current stock - user selected quantity
-    update products set stock = stock - 2 where item_id = 1 ;
+    update products set stock = stock - 2 where item_id = 1
+    ;
 
 
+
+    SELECT *
+    FROM products
+    WHERE stock < 5;
+
+    INSERT INTO products
+    SET 
