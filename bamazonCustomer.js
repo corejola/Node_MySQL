@@ -61,41 +61,27 @@ function makePurchase() {
         {
             type: "input",
             name: "prodID",
-            message: "Which product would you like to purchase? Please input Product ID #."
+            message: "Which product would you like to purchase? Please input Product ID #.",
+            validate: function (val) {
+                if (isNaN(val) || val === "") return false;
+                return true;
+            }
         },
         {
             type: "input",
             name: "purchase",
-            message: "How many products would you like to purchase."
+            message: "How many products would you like to purchase?",
+            validate: function (val) {
+                if (isNaN(val) || val === "") return false;
+                return true;
+            }
         }
     ]).then(function (answer) {
         //validation: input must be a number
-        if (isNaN(answer.prodID) && isNaN(answer.purchase)) {
-            console.log("Please try again and select a valid Product ID # ")
-            connectionEnd();
-        } else {
-            console.log("Your Selection is Product Id #" + answer.prodID)
-            displaySelected(answer.prodID, answer.purchase)
-            //validation: item availability.
-            // stockCheck();
-            inquirer.prompt([
-                {
-                    type: "confirm",
-                    name: "proceed",
-                    message: "Confirm Transaction."
-                }
-            ]).then(function (answer) {
-                if (answer) {
-                    // if are you done with transaction? Y - sum & sql update
-                    // N - run makePurchase();
-                    transaction(answer.purchase, answer.prodID)
-                    connectionEnd();
-                } else {
-                    console.log("Goodbye")
-                    connectionEnd();
-                };
-            });
-        };
+        console.log("Your Selection is Product Id #" + answer.prodID)
+        displaySelected(answer.prodID, answer.purchase)
+        //validation: item availability.
+        stockCheck(answer.prodID, answer.purchase);
     });
 };
 
@@ -105,6 +91,7 @@ function transaction(quantity, productID) {
         [quantity, productID],
         function (err, res) {
             if (err) throw err;
+            // console.log(res)
         });
 };
 
@@ -117,15 +104,51 @@ function displaySelected(id, quantity) {
                 "\nProduct:" + res[i].product_name +
                 "\nQuantity: " + quantity +
                 "\nTotal Price : $" + res[i].price * quantity)
-            // +"\nStock Quantity: " + res[i].stock;
         };
     });
 };
 
-function stockCheck() {
+function stockCheck(id, quantity) {
     // check the products - stock of the item
     // if the user quantity is > than the current available stock, inform the user that there is not enough stock and display the current available stock
     // if the stock === 0, inform the user the item is out of stock
+    var prodID = id;
+    var queryQuantity = quantity;
+
+    connection.query("SELECT * FROM products WHERE item_id = ?", [id], function (err, res) {
+        if (err) throw err;
+
+        console.log("\n" + "Product Name: " + res[0].product_name + "\nStock Check: " + res[0].stock);
+
+        if (quantity <= res[0].stock) {
+            inquirer.prompt([
+                {
+                    type: "confirm",
+                    name: "proceed",
+                    message: "Confirm Transaction."
+                }
+            ]).then(function (answer) {
+                if (answer) {
+                    // if are you done with transaction? Y - sum & sql update
+                    // N - run makePurchase();
+                    console.log("Thank you for your purchase.")
+                    transaction(prodID, queryQuantity);
+                    connectionEnd();
+                } else {
+                    console.log("Goodbye")
+                    connectionEnd();
+                };
+            });
+        }
+        if (quantity > res[0].stock) {
+            console.log("Currenty inventory has insufficient stock" + "\nPlease check again later");
+            connectionEnd();
+        }
+        if (res[0].stock === 0) {
+            console.log("Product: " + res[0].product_name + " OUT OF STOCK");
+        }
+
+    });
 }
 
 function connectionEnd() {

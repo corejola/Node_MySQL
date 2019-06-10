@@ -39,3 +39,5 @@ WHERE
     -- [user selected]
     -- current stock - user selected quantity
     update products set stock = stock - 2 where item_id = 1 ;
+
+
