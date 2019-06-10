@@ -85,16 +85,6 @@ function makePurchase() {
     });
 };
 
-function transaction(quantity, productID) {
-    // update MySQL with deduction  database stock column with quantity input from stock parameter by user input
-    connection.query("UPDATE products SET stock = stock - ? WHERE item_id = ?",
-        [quantity, productID],
-        function (err, res) {
-            if (err) throw err;
-            // console.log(res)
-        });
-};
-
 function displaySelected(id, quantity) {
     connection.query("SELECT * FROM products WHERE item_id = ?", [id], function (err, res) {
         if (err) throw err;
@@ -147,9 +137,21 @@ function stockCheck(id, quantity) {
         if (res[0].stock === 0) {
             console.log("Product: " + res[0].product_name + " OUT OF STOCK");
         }
-
     });
-}
+};
+
+function transaction(id, purchased) {
+    // update MySQL with deduction  database stock column with quantity input from stock parameter by user input
+    var sql = "UPDATE products SET stock = stock - ? WHERE item_id = ?";
+    var inserts = [purchased, id];
+    sql = mysql.format(sql, inserts);
+
+    connection.query(sql,
+        function (err, res) {
+            if (err) throw err;
+            console.log(res)
+        });
+};
 
 function connectionEnd() {
     connection.end();

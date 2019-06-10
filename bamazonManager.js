@@ -39,11 +39,9 @@ function initiateMGMT() {
         if (answer.selection === "Products for Sale") {
             saleProducts()
         }
-
         if (answer.selection === "Low Inventory") {
             lowInventory()
         }
-
         if (answer.selection === "Add to Inventory") {
             inquirer.prompt([
                 {
@@ -70,7 +68,6 @@ function initiateMGMT() {
                 restock(answer.stock, answer.prodID)
             });
         };
-
         if (answer.selection === "Add New Products") {
             console.log("Upload New Inventory Information")
             inquirer.prompt([
@@ -175,7 +172,7 @@ function complete() {
             message: "Are you finished?"
         }
     ]).then(function (answer) {
-        if (answer) {
+        if (answer.processComplete) {
             console.log("Goodbye");
             connectionEnd();
         } else {
