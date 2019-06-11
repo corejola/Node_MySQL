@@ -48,4 +48,20 @@ WHERE
     WHERE stock < 5;
 
     INSERT INTO products
-    SET 
+    SET
+
+    CREATE TABLE dpeartments
+    (
+        department_id INT NOT NULL
+        AUTO_INCREMENT,
+    department_name VARCHAR
+        (50) NULL,
+    overhead DECIMAL
+        (10,2) NULL,
+    product_sales INT
+        (10) NULL,
+     total_profit INT
+        (10) NULL,
+    PRIMARY KEY
+        (department_id)
+);

@@ -88,12 +88,14 @@ function makePurchase() {
 function displaySelected(id, quantity) {
     connection.query("SELECT * FROM products WHERE item_id = ?", [id], function (err, res) {
         if (err) throw err;
+
         for (var i = 0; i < res.length; i++) {
+            var totalPrice = res[i].price * quantity
             console.log("------------" + "\nYour Transaction Summary: ")
             console.log("\nItem Id: " + res[i].item_id +
                 "\nProduct:" + res[i].product_name +
                 "\nQuantity: " + quantity +
-                "\nTotal Price : $" + res[i].price * quantity)
+                "\nTotal Price : $" + totalPrice)
         };
     });
 };
