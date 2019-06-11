@@ -65,3 +65,6 @@ WHERE
     PRIMARY KEY
         (department_id)
 );
+
+
+        UPDATE products SET product_sales = product_sales + 200 WHERE item_id = 1;

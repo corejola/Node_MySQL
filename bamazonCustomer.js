@@ -111,6 +111,8 @@ function stockCheck(id, quantity) {
         if (err) throw err;
 
         console.log("\n" + "Product Name: " + res[0].product_name + "\nStock Check: " + res[0].stock);
+        var sales = quantity * res[0].price
+        console.log("Total Sale: " + sales);
 
         if (quantity <= res[0].stock) {
             inquirer.prompt([
@@ -125,7 +127,9 @@ function stockCheck(id, quantity) {
                     // N - run makePurchase();
                     console.log("Thank you for your purchase.")
                     transaction(prodID, queryQuantity);
+                    productSales(prodID, sales);
                     connectionEnd();
+
                 } else {
                     console.log("Goodbye")
                     connectionEnd();
@@ -154,6 +158,18 @@ function transaction(id, purchased) {
             console.log(res)
         });
 };
+
+function productSales(id, sales) {
+    var sql = "UPDATE products SET product_sales = product_sales + ? WHERE item_id = ?";
+    var inserts = [sales, id];
+    sql = mysql.format(sql, inserts);
+
+    connection.query(sql,
+        function (err, res) {
+            if (err) throw err;
+            console.log(res)
+        });
+}
 
 function connectionEnd() {
     connection.end();
