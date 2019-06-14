@@ -42,6 +42,11 @@ Links for MySQL & Inquirer are located at the end of this README.
 3. Once an action is completed, bamazoneManager.js will prompt the user if they have finished. 
     * If finished, bamazonManager.js will exit.
     * If more actions are required, main menu will launch.
+
+#
+## How to Use bamazon Supervisor
+1. run `node bamazonSupervisor.js`
+2. BamazonSupervisor will connect to the `bamazondb`
     
 
 ## Node Packages used:

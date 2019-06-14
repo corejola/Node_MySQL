@@ -50,7 +50,7 @@ WHERE
     INSERT INTO products
     SET
 
-    CREATE TABLE dpeartments
+    CREATE TABLE departments
     (
         department_id INT NOT NULL
         AUTO_INCREMENT,
@@ -68,3 +68,16 @@ WHERE
 
 
         UPDATE products SET product_sales = product_sales + 200 WHERE item_id = 1;
+
+        SELECT department_name, SUM(product_sales) AS department_sales
+        FROM products
+        GROUP BY department_name;
+
+        SELECT products.product_sales, products.department_name, departments.department_name
+        FROM products
+            Left JOIN departments ON products.department_name = departments.department_name
+        ORDER BY departments.department_id;
+
+        INSERT INTO departments
+            (department_name, overhead)
+        values(value, value)
