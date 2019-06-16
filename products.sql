@@ -73,10 +73,15 @@ WHERE
         FROM products
         GROUP BY department_name;
 
-        SELECT products.product_sales, products.department_name, departments.department_name
-        FROM products
-            Left JOIN departments ON products.department_name = departments.department_name
+
+        -- BamazonSupervisor Code:
+
+        SELECT departments.department_id, departments.department_name, departments.overhead, SUM(products.product_sales) AS product_sales, (product_sales - departments.overhead) AS Profit
+        FROM departments LEFT JOIN products ON products.department_name = departments.department_name
+        GROUP BY products.department_name
         ORDER BY departments.department_id;
+
+
 
         INSERT INTO departments
             (department_name, overhead)

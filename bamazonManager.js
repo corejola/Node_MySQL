@@ -143,7 +143,8 @@ function newInventory(name, deptName, price, stock) {
             product_name: name,
             department_name: deptName,
             price: price,
-            stock: stock
+            stock: stock,
+            product_sales: 0
         },
         function (err, res) {
             if (err) throw err;
