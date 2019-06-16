@@ -44,16 +44,24 @@ Links for MySQL & Inquirer are located at the end of this README.
     * If more actions are required, main menu will launch.
 
 #
-## How to Use bamazon Supervisor (incomplete)
+## How to Use bamazon Supervisor 
 1. run `node bamazonSupervisor.js`
 2. BamazonSupervisor will connect to the `bamazondb`
 3. User will be prompted to make a selection
-    1. View Product Sales by Deparment
-        * Product sales of department shows/ combines the products sales value from all items with matching department_names
+    1. View Product Sales by Department
+        * Product sales by department shows & combines the products sales value from all items with matching department_names
         * Table displayed to the console (via CLI Table3) will display the overhead against the product sales combined as the alias department_sales
         * Profit is displayed as the difference between the overhead the department_sales
+        * All parameters of bamazonSupervisor Product sales captured by the following SQL:
+            *  ` SELECT departments.department_id, departments.department_name, departments.overhead, SUM(products.product_sales) AS product_sales, (product_sales - departments.overhead) AS Profit
+        FROM departments LEFT JOIN products ON products.department_name = departments.department_name
+        GROUP BY products.department_name
+        ORDER BY departments.department_id;`
+        * ![bamazon Manager New Inventory](assets\images\bamazonSuperProfits.PNG)
     2. Create New Department
         * Allow use to add new department departments tables
+        * ![bamazon Supervisor New Department](assets\images\bamazonSuperNewDeptPNG.PNG)
+        * ![bamazon Supervisor New Department](assets\images\bamazonSuperNewDeptSQL.PNG)
     
 
 ## Node Packages used:
