@@ -15,7 +15,7 @@ Links for MySQL & Inquirer are located at the end of this README.
 5. The user will be prompted to input the quantity they would like to purchase.
 6. Bamazon will then display the users input & display the current inventory stock.
 7. A confirmation will be required to continue. Once confirmed, transaction is complete.
-  - ![bamazon Customer Transaction](assets\images\bamazonCustomerTrans.PNG)
+  - ![bamazon Customer Transaction](assets/images/bamazonCustomerTrans.PNG)
 8. `bamazondb - products'` stock will be updated.  
     - `UPDATE products SET stock = stock - [user quantity] WHERE item_id = #`
     - ![updated sql](assets\images\SQLSnapshot.PNG)
