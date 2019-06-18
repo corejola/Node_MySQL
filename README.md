@@ -18,14 +18,14 @@ Links for MySQL & Inquirer are located at the end of this README.
   - ![bamazon Customer Transaction](assets/images/bamazonCustomerTrans.PNG)
 8. `bamazondb - products'` stock will be updated.  
     - `UPDATE products SET stock = stock - [user quantity] WHERE item_id = #`
-    - ![updated sql](assets\images\SQLSnapshot.PNG)
+    - ![updated sql](assets/images/SQLSnapshot.PNG)
 
 #
 ## How to Use bamazon Manager
 1. Run `node bamazonManager.js`
 2. BamazonManager will connect to the `bamazondb` and the user (4) menu options:
 
-    * ![bamazon Manager Menu](assets\images\bamazonManagerMenu.PNG)
+    * ![bamazon Manager Menu](assets/images/bamazonManagerMenu.PNG)
 
     * `Products for Sale` - display all inventory products from the products table.
     * `Low Inventory` - dispaly inventory products from the products table that have stock count less than 5.
@@ -38,7 +38,7 @@ Links for MySQL & Inquirer are located at the end of this README.
         - Price
         - Stock
 
-    * ![bamazon Manager New Inventory](assets\images\bamazonManagerNewInventory.png)
+    * ![bamazon Manager New Inventory](assets/images/bamazonManagerNewInventory.png)
 3. Once an action is completed, bamazoneManager.js will prompt the user if they have finished. 
     * If finished, bamazonManager.js will exit.
     * If more actions are required, main menu will launch.
@@ -57,11 +57,11 @@ Links for MySQL & Inquirer are located at the end of this README.
         FROM departments LEFT JOIN products ON products.department_name = departments.department_name
         GROUP BY products.department_name
         ORDER BY departments.department_id;`
-        * ![bamazon Manager New Inventory](assets\images\bamazonSuperProfits.PNG)
+        * ![bamazon Manager New Inventory](assets/images/bamazonSuperProfits.PNG)
     2. Create New Department
         * Allow use to add new department departments tables
-        * ![bamazon Supervisor New Department](assets\images\bamazonSuperNewDeptPNG.PNG)
-        * ![bamazon Supervisor New Department](assets\images\bamazonSuperNewDeptSQL.PNG)
+        * ![bamazon Supervisor New Department](assets/images/bamazonSuperNewDeptPNG.PNG)
+        * ![bamazon Supervisor New Department](assets/images/bamazonSuperNewDeptSQL.PNG)
     
 
 ## Node Packages used:
